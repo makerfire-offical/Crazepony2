@@ -135,11 +135,9 @@ void rx_data_process(int16_t *buf)
 
 	if(WIFI_DATA_OK) {
 
-		if(App_data[4] & APP_ARM)\
+		if(App_data[4] & APP_ARM)
 			mspData.mspCmd |= ARM;
-
-		if(App_data[4] & APP_DIS)\
-			mspData.mspCmd &= ~ARM;
+		else mspData.mspCmd &= ~ARM;
 		
 		if(App_data[4] & APP_ALT)
 			mspData.mspCmd |= ALTHOLD;
