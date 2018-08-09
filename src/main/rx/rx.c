@@ -505,7 +505,7 @@ static void readRxChannelsApplyRanges(void)
 
 }
 
-static void detectAndApplySignalLossBehaviour(void)
+void detectAndApplySignalLossBehaviour(void)
 {
     int channel;
     uint16_t sample;
@@ -591,15 +591,10 @@ void calculateRxChannelsAndUpdateFailsafe(uint32_t currentTime)
 
 
 #ifdef NRF	
-	static uint8_t a,b,c,d = 1;
-	static uint16_t m;
-
-	//debug[1] = WIFI_DATA_OK;////////////
-	//if(WIFI_DATA_OK) debug[1]++;\
-		else debug[0]++;
-
+	//save count,cal time
+	static uint8_t a,b,c;// init value equal 0
 	c++;
-	if(c > 60) {
+	if(c > 60) {//>1s
 		c = 0;
 		if(APP_DATA_FLAG == true) {
 			APP_DATA_FLAG = false;

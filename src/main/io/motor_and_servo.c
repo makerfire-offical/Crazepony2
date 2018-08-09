@@ -33,18 +33,17 @@
 #define BRUSHED_MOTORS_PWM_RATE 16000
 #define BRUSHLESS_MOTORS_PWM_RATE 400
 
+
 #ifdef BRUSHED_MOTORS
 #define DEFAULT_PWM_RATE BRUSHED_MOTORS_PWM_RATE
 #else
 #define DEFAULT_PWM_RATE BRUSHLESS_MOTORS_PWM_RATE
 #endif
 
-#ifdef NRF
-#define DEFAULT_PWM_RATE 16000
-#endif
 
 PG_REGISTER_WITH_RESET_TEMPLATE(motorAndServoConfig_t, motorAndServoConfig, PG_MOTOR_AND_SERVO_CONFIG, 0);
 
+#ifndef NRF
 PG_RESET_TEMPLATE(motorAndServoConfig_t, motorAndServoConfig,
     .minthrottle = 1050,
     .maxthrottle = 1950,
@@ -53,3 +52,13 @@ PG_RESET_TEMPLATE(motorAndServoConfig_t, motorAndServoConfig,
     .motor_pwm_rate = DEFAULT_PWM_RATE,
     .servo_pwm_rate = 50,
 );
+#else
+PG_RESET_TEMPLATE(motorAndServoConfig_t, motorAndServoConfig,
+    .minthrottle = 1250,
+    .maxthrottle = 1950,
+    .mincommand = 1000,
+    .servoCenterPulse = 1500,
+    .motor_pwm_rate = BRUSHED_MOTORS_PWM_RATE,
+    .servo_pwm_rate = 50,
+);
+#endif

@@ -359,6 +359,7 @@ int32_t getRcStickDeflection(int32_t axis, uint16_t midrc)
 void useRcControlsConfig(modeActivationCondition_t *modeActivationConditions)
 {
 #ifdef NRF
+	UNUSED(modeActivationConditions);
 	isUsingSticksToArm = false;
 #else
     isUsingSticksToArm = !rcModeIsActivationConditionPresent(modeActivationConditions, BOXARM);

@@ -128,7 +128,9 @@ bool nrf_rx(void)
 		
 }
 
-
+extern void mwArm(void);
+extern void mwDisarm(void);
+extern void accSetCalibrationCycles(uint16_t);
 void rx_data_process(int16_t *buf)
 {
 	static bool roll_flag,arm_flag;

@@ -32,6 +32,7 @@
 //#include "fc/config.h"
 #include "fc/rc_curves.h"
 #include "fc/rate_profile.h"
+#include "crazepony2_config.h"
 
 PG_REGISTER_PROFILE(rateProfileSelection_t, rateProfileSelection, PG_RATE_PROFILE_SELECTION, 0);
 PG_REGISTER_ARR_WITH_RESET_FN(controlRateConfig_t, MAX_CONTROL_RATE_PROFILE_COUNT, controlRateProfiles, PG_CONTROL_RATE_PROFILES, 0);
@@ -42,6 +43,7 @@ controlRateConfig_t *currentControlRateProfile;
 void pgResetFn_controlRateProfiles(controlRateConfig_t *instance)
 {
     for (int i = 0; i < MAX_CONTROL_RATE_PROFILE_COUNT; i++) {
+#ifndef C2_VERSION
         RESET_CONFIG(controlRateConfig_t, &instance[i],
             .rcRate8 = 109,
             .rcExpo8 = 65,
@@ -49,6 +51,20 @@ void pgResetFn_controlRateProfiles(controlRateConfig_t *instance)
 			.thrExpo8 = 40,
             .tpa_breakpoint = 1500,
         );
+#else
+
+#if (C2_VERSION == 11)
+        RESET_CONFIG(controlRateConfig_t, &instance[i],
+            .rcRate8 = 60,
+            .rcExpo8 = 0,
+            .thrMid8 = 47,
+			.thrExpo8 = 38,
+            .tpa_breakpoint = 1500,
+        );
+#elif
+#endif
+
+#endif
     }
 }
 

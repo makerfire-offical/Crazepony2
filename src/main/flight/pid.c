@@ -46,6 +46,7 @@
 #include "fc/rate_profile.h"
 
 #include "flight/pid.h"
+#include "crazepony2_config.h"
 
 int16_t axisPID[3];
 
@@ -74,6 +75,7 @@ pidControllerFuncPtr pid_controller = pidMultiWiiRewrite;
 
 PG_REGISTER_PROFILE_WITH_RESET_TEMPLATE(pidProfile_t, pidProfile, PG_PID_PROFILE, 0);
 
+#ifndef C2_VERSION
 PG_RESET_TEMPLATE(pidProfile_t, pidProfile,
     .pidController = PID_CONTROLLER_MWREWRITE,
     .P8[PIDROLL] = 66,
@@ -110,6 +112,50 @@ PG_RESET_TEMPLATE(pidProfile_t, pidProfile,
     .yaw_lpf = 80,
     .deltaMethod = PID_DELTA_FROM_MEASUREMENT,
 );
+#else
+//根据版本切换参数
+#if (C2_VERSION == 11)
+
+PG_RESET_TEMPLATE(pidProfile_t, pidProfile,
+    .pidController = PID_CONTROLLER_MWREWRITE,
+    .P8[PIDROLL] = 98,
+    .I8[PIDROLL] = 62,
+    .D8[PIDROLL] = 24,
+    .P8[PIDPITCH] = 98,
+    .I8[PIDPITCH] = 64,
+    .D8[PIDPITCH] = 25,
+    .P8[PIDYAW] = 120,
+    .I8[PIDYAW] = 88,
+    .D8[PIDYAW] = 0,
+    .P8[PIDALT] = 40,
+    .I8[PIDALT] = 0,
+    .D8[PIDALT] = 0,
+    .P8[PIDPOS] = 15,   // POSHOLD_P * 100
+    .I8[PIDPOS] = 0,    // POSHOLD_I * 100
+    .D8[PIDPOS] = 0,
+    .P8[PIDPOSR] = 34,  // POSHOLD_RATE_P * 10
+    .I8[PIDPOSR] = 14,  // POSHOLD_RATE_I * 100
+    .D8[PIDPOSR] = 53,  // POSHOLD_RATE_D * 1000
+    .P8[PIDNAVR] = 25,  // NAV_P * 10
+    .I8[PIDNAVR] = 33,  // NAV_I * 100
+    .D8[PIDNAVR] = 83,  // NAV_D * 1000
+    .P8[PIDLEVEL] = 13, 
+    .I8[PIDLEVEL] = 10,
+    .D8[PIDLEVEL] = 100,
+    .P8[PIDMAG] = 40,
+    .P8[PIDVEL] = 114,
+    .I8[PIDVEL] = 78,
+    .D8[PIDVEL] = 1,
+
+    .yaw_p_limit = YAW_P_LIMIT_MAX,
+    .dterm_lpf = 100,   // DTERM filtering ON by default
+    .yaw_lpf = 80,
+    .deltaMethod = PID_DELTA_FROM_MEASUREMENT,
+);
+#elif
+#endif
+
+#endif
 
 void pidResetITerm(void)
 {
