@@ -152,7 +152,7 @@ PG_RESET_TEMPLATE(pidProfile_t, pidProfile,
     .yaw_lpf = 80,
     .deltaMethod = PID_DELTA_FROM_MEASUREMENT,
 );
-#elif
+
 #endif
 
 #endif
