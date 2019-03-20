@@ -61,7 +61,6 @@ void pgResetFn_controlRateProfiles(controlRateConfig_t *instance)
 			.thrExpo8 = 38,
             .tpa_breakpoint = 1500,
         );
-#elif
 #endif
 
 #endif
